@@ -8,9 +8,6 @@ def look_for_proj_dir(d, fn = 'Cargo.toml'):
         d = p
     return d
 
-def get_workspace_dir(proj_dir):
-    return look_for_proj_dir(os.path.dirname(proj_dir))
-
 def read_sdk_version(root):
     fp = os.path.join(root, 'bin', 'internal', 'engine.version')
     with open(fp) as f:

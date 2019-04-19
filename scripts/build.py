@@ -2,7 +2,7 @@
 import os, sys
 import toml
 import argparse
-from lib import look_for_proj_dir, get_workspace_dir, get_flutter_version
+from lib import look_for_proj_dir, get_flutter_version
 import subprocess
 
 FLUTTER = 'flutter.bat' if sys.platform == 'win32' else 'flutter'
@@ -20,12 +20,7 @@ def collect_env(args):
     DEBUG = not args.release
     RELEASE = args.release
 
-    WORKSPACE = get_workspace_dir(RUST_PROJ_DIR)
-    if WORKSPACE is not None:
-        # cargo put outputs in workspace target directory
-        TARGET_DIR = os.path.join(WORKSPACE, 'target')
-    else:
-        TARGET_DIR = os.path.join(RUST_PROJ_DIR, 'target')
+    TARGET_DIR = os.path.join(RUST_PROJ_DIR, 'target')
     OUTPUT_DIR = os.path.join(TARGET_DIR, 'debug' if DEBUG else 'release')
     FLUTTER_CONFIG = META['package']['metadata']['flutter']
     IDENTIFIER =  FLUTTER_CONFIG['identifier'] if 'identifier' in FLUTTER_CONFIG else 'one.juju.flutter-app'
