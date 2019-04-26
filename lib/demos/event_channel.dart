@@ -41,7 +41,9 @@ class _EventChannelDemoState extends State<EventChannelDemo> {
     if (sub != null) {
       await sub.cancel();
       if (this.mounted) {
-        setState(() {});
+        setState(() {
+          sub = null;
+        });
       }
     }
   }
@@ -55,7 +57,7 @@ class _EventChannelDemoState extends State<EventChannelDemo> {
   @override
   Widget build(context) {
     var status;
-    if (sub != null && !sub.isPaused) {
+    if (sub != null) {
       status = 'Listening';
     } else {
       status = 'Not listening';
