@@ -2,7 +2,6 @@
 import os
 import glob
 import subprocess
-from string import Template
 from lib import look_for_proj_dir
 
 def get_config():
@@ -47,11 +46,7 @@ def tmpl_proj(config):
         for fp in glob.iglob(os.path.join(proj_dir, pattern)):
             fp = os.path.join(proj_dir, fp)
             if os.path.isfile(fp):
-                with open(fp, 'r+') as f:
-                    s = Template(f.read()).substitute(**config)
-                    f.seek(0)
-                    f.truncate()
-                    f.write(s)
+                tmpl_file(fp, config)
 
 def run():
     config = get_config()

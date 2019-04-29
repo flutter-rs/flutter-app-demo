@@ -1,4 +1,6 @@
 import os, sys, subprocess
+from string import Template
+
 
 def look_for_proj_dir(d, fn = 'Cargo.toml'):
     while not os.path.isfile(os.path.join(d, fn)):
@@ -46,3 +48,11 @@ def get_flutter_version():
 
 def get_workspace_dir(proj_dir):
     return look_for_proj_dir(os.path.dirname(proj_dir))
+
+
+def tmpl_file(fp, config):
+    with open(fp, 'r+') as f:
+        s = Template(f.read()).substitute(**config)
+        f.seek(0)
+        f.truncate()
+        f.write(s)
