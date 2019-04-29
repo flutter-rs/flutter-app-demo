@@ -43,3 +43,6 @@ def get_flutter_version():
             return read_sdk_version(sdk)
         else:
             raise Exception('Cannot find flutter engine version. flutter cli not in PATH. You may need to set either FLUTTER_ROOT or FLUTTER_ENGINE_VERSION')
+
+def get_workspace_dir(proj_dir):
+    return look_for_proj_dir(os.path.dirname(proj_dir))
