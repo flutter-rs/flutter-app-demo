@@ -2,7 +2,7 @@
 import os
 import glob
 import subprocess
-from lib import look_for_proj_dir
+from lib import look_for_proj_dir, tmpl_file
 
 def get_config():
     try:
