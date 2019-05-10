@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-var cmd = 'git clone https://github.com/gliheng/flutter-app-template.git flutter_app\n./flutter_app/scripts/init.py';
+var cmd = 'git clone https://github.com/gliheng/flutter-app-template.git flutter_app\npython ./flutter_app/scripts/init.py';
 
 class GetStartedPage extends StatelessWidget {
   final MethodChannel channel = MethodChannel('flutter/platform', JSONMethodCodec());
@@ -73,7 +73,7 @@ class GetStartedPage extends StatelessWidget {
               children: <Widget>[
                 Center(
                   child: SizedBox(
-                    width: 700,
+                    width: 800,
                     height: 100,
                     child: FlatButton(
                       color: Colors.black12,
