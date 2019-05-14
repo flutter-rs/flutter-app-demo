@@ -84,6 +84,7 @@ fn main() {
                 width: 1800,
                 title: "Flutter App Demo",
                 mode: flutter_engine::WindowMode::Windowed,
+                bg_color: (255, 255, 255),
             },
             assets_path.to_string_lossy().to_string(),
             icu_data_path.to_string_lossy().to_string(),
