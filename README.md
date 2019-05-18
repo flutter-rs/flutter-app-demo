@@ -5,9 +5,13 @@ A desktop app built using flutter & rust.
 ![screenshot](https://raw.githubusercontent.com/gliheng/flutter-rs/master/www/images/screenshot_mac.png)
 
 
-- Runs on mac and linux, so far.
-- Build distribution only works on mac.
-- Windows will be supported.
+- Support Hot reload
+- MethodChannel, EventChannel
+- Async runtime using tokio
+- System dialogs
+- Clipboard support
+- Cross platform support, Runs on mac, windows, linux
+- Support distribution format: (windows NSIS, mac app, mac dmg, linux snap)
 
 # Install requirements
 
@@ -27,25 +31,24 @@ You can set this using any of the following methods.
 - Set FLUTTER_ENGINE_VERSION environment variable to your engine version
 
 # Develop
-- To develop with hot-reloading, simple run:
+- To develop with cli hot-reloading, simple run:
 
-    `./scripts/run.py`
+    `python ./scripts/run.py`
 
-- To show rust logs, add these environment variables:
+- To debug using VS Code dart tools:
 
-    `RUST_LOG=flutter_engine=trace,flutter_app_demo=trace ./scripts/run.py`
+    Start process using `cargo run`
 
-- On windows powershell, set environment variables as:
-
-    `$env:RUST_LOG="flutter_engine=trace,flutter_app_demo=trace"`
+    Then attach to debugger using
+    `flutter attach --debug-uri=DEBUG_URI`
 
 # Distribute
 - To build distribution, use:
-    `./scripts/build.py mac`
-    `./scripts/build.py dmg`
+    `python ./scripts/build.py mac|dmg|nsis|snap`
 
 **Note:**
 Build scripts are written in python3. Install python depenendencies using `pip3 install -r scripts/requirements.txt`
+Build on Windows require [NSIS3](https://sourceforge.net/projects/nsis/files/NSIS%203/)
 
 ---
 
