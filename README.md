@@ -46,17 +46,6 @@ You can set this using any of the following methods.
 - To build distribution, use:
     `python ./scripts/build.py mac|dmg|nsis|snap`
 
-**Note:**
-Build scripts are written in python3. Install python depenendencies using `pip3 install -r scripts/requirements.txt`
-Build on Windows require [NSIS3](https://sourceforge.net/projects/nsis/files/NSIS%203/)
-
----
-
-## For users in China
-Please ensure you have access to *storage.googleapis.com*. It is required to download lib_flutter. 
-
-Set appropriate http proxy in the terminal by using:
-```shell
-export http_proxy=...
-export https_proxy=...
-```
+    **Note:**
+    Build scripts are written in python3. Install python depenendencies using `pip3 install -r scripts/requirements.txt`
+    Build on Windows require [NSIS3](https://sourceforge.net/projects/nsis/files/NSIS%203/)
