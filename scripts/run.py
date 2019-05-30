@@ -50,7 +50,7 @@ def cargo_run():
 if __name__ == '__main__':
     print('🍀  Building flutter bundle')
     subprocess.run(
-        [FLUTTER, 'build', 'bundle'],
+        [FLUTTER, 'build', 'bundle', '--track-widget-creation'],
         cwd = PROJ_DIR, check = True)
 
     print('🦀  Building rust project')
