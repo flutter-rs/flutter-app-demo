@@ -3,6 +3,7 @@ import 'method_channel.dart';
 import 'event_channel.dart';
 import 'file_dialog.dart';
 import 'textfield.dart';
+import 'keyboard.dart';
 import 'window.dart';
 
 class Demo {
@@ -39,4 +40,9 @@ List<Demo> demos = [
     'Control native window',
     Icons.laptop_windows,
     (BuildContext context) => WindowDemo()),
+  Demo(
+    'KeyBoard',
+    'Listen to keyboard event',
+    Icons.keyboard,
+    (BuildContext context) => KeyBoardDemo()),
 ];
