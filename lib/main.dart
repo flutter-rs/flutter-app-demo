@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride;
-import 'demos/demos.dart';
+import 'demos.dart';
 import 'utils.dart';
 
 

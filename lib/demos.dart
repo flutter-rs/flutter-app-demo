@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'method_channel.dart';
-import 'event_channel.dart';
-import 'file_dialog.dart';
-import 'textfield.dart';
-import 'keyboard.dart';
-import 'window.dart';
+import './demos/method_channel.dart';
+import './demos/event_channel.dart';
+import './demos/file_dialog.dart';
+import './demos/textfield.dart';
+import './demos/keyboard.dart';
+import './demos/window.dart';
+import './demos/context_menu.dart';
 
 class Demo {
   String name;
@@ -45,4 +46,9 @@ List<Demo> demos = [
     'Listen to keyboard event',
     Icons.keyboard,
     (BuildContext context) => KeyBoardDemo()),
+  Demo(
+    'Create Context Menu',
+    'Right click to create context menu',
+    Icons.menu,
+    (BuildContext context) => ContextMenuDemo()),
 ];
