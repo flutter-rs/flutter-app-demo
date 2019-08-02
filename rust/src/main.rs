@@ -98,6 +98,16 @@ fn main() {
             .add_plugin(dialog::DialogPlugin::default())
             .add_plugin(msg_stream_channel::MsgStreamPlugin::default())
             .add_plugin(window::WindowPlugin::default());
+        window_state
+            .plugin_registrar
+            .with_plugin(|p: &flutter_engine::plugins::SettingsPlugin| {
+                p.start_message()
+                    .set_text_scale_factor(1.0)
+                    .set_platform_brightness(
+                        flutter_engine::plugins::settings::PlatformBrightness::Dark,
+                    )
+                    .send();
+            });
     });
     engine.run_window_loop(Some(&mut glfw_event_handler), None);
 }
