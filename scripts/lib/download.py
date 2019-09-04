@@ -8,19 +8,24 @@ from . import get_flutter_version
 def should_download(ver):
     if sys.platform == 'linux':
         fn = 'libflutter_engine.so'
+        path = os.path.join(lib_path(), ver, fn)
+        exist = os.path.isfile(path)
     elif sys.platform == 'darwin':
-        fn = ''
+        fn = 'FlutterEmbedder.framework'
+        path = os.path.join(lib_path(), ver, fn)
+        exist = os.path.isdir(path)
     elif sys.platform == 'win32':
-        fn = ''
-    path = os.path.join(lib_path(), ver, fn)
-    return not os.path.isfile(path)
+        fn = 'flutter_engine.dll'
+        path = os.path.join(lib_path(), ver, fn)
+        exist = os.path.isfile(path)
+    return not exist
 
 DIR = 'flutter-engine'
 def lib_path():
     if sys.platform == 'linux':
-        return os.path.expanduser('~/.local/share/' + DIR)
+        return os.path.expanduser('~/.cache/' + DIR)
     elif sys.platform == 'darwin':
-        return os.path.expanduser('~/Library/Application Support/' + DIR)
+        return os.path.expanduser('~/Library/Caches/' + DIR)
     elif sys.platform == 'win32':
         # is this right?
         return os.path.expanduser('~/AppData/local/' + DIR)
@@ -55,6 +60,11 @@ def download_and_extract(ver):
     print('Extracting files')
     with zipfile.ZipFile(fp) as zf:
         zf.extractall(dest)
+
+    if sys.platform == 'darwin':
+        subprocess.run([
+            'unzip', 'FlutterEmbedder.framework.zip',
+            '-d', 'FlutterEmbedder.framework'], stdout=subprocess.DEVNULL, cwd=dest)
 
     fp.close()
 

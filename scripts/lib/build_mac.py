@@ -1,6 +1,7 @@
 import os
 from shutil import copy, copyfile, copytree, rmtree
 import subprocess
+from .download import lib_path
 
 def prepare(envs):
     envs = dict(envs)
@@ -26,8 +27,7 @@ def build(envs):
     os.makedirs(res_dir, exist_ok = True)
     copy(os.path.join(envs['TARGET_DIR'], 'debug' if envs['DEBUG'] else 'release' , envs['NAME']), bin_dir)
     subprocess.run(['chmod', '+x', os.path.join(bin_dir, envs['NAME'])], check = True)
-    copytree(os.path.join(envs['WORKSPACE_TARGET_DIR'] or envs['TARGET_DIR'], 'flutter-engine', envs['FLUTTER_LIB_VER'], 'FlutterEmbedder.framework'), os.path.join(frm_dir, 'FlutterEmbedder.framework'), symlinks = True)
-
+    copytree(os.path.join(lib_path(), envs['FLUTTER_LIB_VER'], 'FlutterEmbedder.framework'), os.path.join(frm_dir, 'FlutterEmbedder.framework'), symlinks = True)
     # copy resources
     copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icon.icns'), res_dir)
     copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icudtl.dat'), res_dir)
