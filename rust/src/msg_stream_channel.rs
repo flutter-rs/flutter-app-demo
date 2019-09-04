@@ -65,10 +65,8 @@ impl EventHandler for Handler {
                 .take_until(tripwire)
                 .for_each(move |v| {
                     rt.with_channel(CHANNEL_NAME, move |channel| {
-                        if let Some(channel) = channel.try_as_method_channel() {
-                            let ret = Value::String(String::from(v));
-                            channel.send_success_event(&ret);
-                        }
+                        let ret = Value::String(String::from(v));
+                        channel.send_success_event(&ret);
                     })
                     .unwrap();
                     Ok(())
