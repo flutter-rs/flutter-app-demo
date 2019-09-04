@@ -2,6 +2,7 @@ import os
 import subprocess
 from shutil import copy, copyfile, copytree, rmtree
 from . import tmpl_file
+from .download import lib_path
 
 def prepare(envs):
     envs = dict(envs)
@@ -29,7 +30,7 @@ def collect(envs):
   # flutter app files
   copy(bin, files_dir)
   # subprocess.run(['chmod', '+x', os.path.join(files_dir, envs['NAME'])], check = True)
-  copy(os.path.join(envs['WORKSPACE_TARGET_DIR'] or envs['TARGET_DIR'], 'flutter-engine', envs['FLUTTER_LIB_VER'], 'libflutter_engine.so'), files_dir)
+  copy(os.path.join(lib_path(), envs['FLUTTER_LIB_VER'], 'libflutter_engine.so'), files_dir)
   copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icon.ico'), files_dir)
   copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icudtl.dat'), files_dir)
 
@@ -61,7 +62,11 @@ def build(envs):
         envs['SNAP_DIR'],
         fn,
     )
-    subprocess.run(['snapcraft', 'snap', '-o', fn], cwd = envs['SNAP_DIR'], check = True)
+    try:
+      subprocess.run(['snapcraft', 'snap', '-o', fn], cwd = envs['SNAP_DIR'], check = True)
+    except Exception as e:
+      print('Cannot build snapcraft in dir', envs['SNAP_DIR'])
+      print(e)
     return output
 
 
