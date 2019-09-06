@@ -1,6 +1,6 @@
 use std::{iter::repeat, time::Duration};
 
-use flutter_engine::plugins::prelude::*;
+use flutter_engine::prelude::*;
 use log::info;
 use stream_cancel::{StreamExt as StreamExt2, Trigger, Tripwire};
 use tokio::prelude::*;

@@ -32,6 +32,7 @@ class CargoThread(threading.Thread):
             line = self.proc.stdout.readline()
             if self.proc.poll() is not None:
                 # proc ended
+                self.observatory_open.set()
                 return
             print(line.decode(), end = '')
             match = re.search(r'Observatory listening on (?P<schema>https?://)(\S*)', line.decode())
@@ -49,9 +50,10 @@ def cargo_run():
 
 if __name__ == '__main__':
     print('🍀  Building flutter bundle')
-    subprocess.run(
+    """     subprocess.run(
         [FLUTTER, 'build', 'bundle', '--track-widget-creation'],
         cwd = PROJ_DIR, check = True)
+    """
 
     print('🦀  Building rust project')
     uri = cargo_run()

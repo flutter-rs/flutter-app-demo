@@ -7,7 +7,7 @@ mod msg_stream_channel;
 use std::{env, path::PathBuf};
 
 use fern::colors::{Color, ColoredLevelConfig};
-use flutter_engine::DesktopWindowState;
+use flutter_engine::prelude::*;
 use flutter_plugins::{dialog, window};
 use log::info;
 
@@ -57,7 +57,7 @@ fn main() {
         .apply()
         .unwrap();
 
-    let (assets_path, icu_data_path) = match env::var("CARGO_MANIFEST_DIR") {
+    let (mut assets_path, icu_data_path) = match env::var("CARGO_MANIFEST_DIR") {
         Ok(proj_dir) => {
             info!("Running inside cargo project");
             let proj_dir = PathBuf::from(&proj_dir);
@@ -77,6 +77,7 @@ fn main() {
     };
 
     let mut engine = flutter_engine::init().unwrap();
+    assets_path.pop();
     engine
         .create_window(
             &flutter_engine::WindowArgs {
@@ -86,7 +87,13 @@ fn main() {
                 mode: flutter_engine::WindowMode::Windowed,
                 bg_color: (255, 255, 255),
             },
-            assets_path.to_string_lossy().to_string(),
+            // &RuntimeMode::Debug(assets_path.to_string_lossy().to_string()),
+            &RuntimeMode::Release(
+                assets_path.join("vm_snapshot_data").to_string_lossy().to_string(),
+                assets_path.join("vm_snapshot_instr").to_string_lossy().to_string(),
+                assets_path.join("isolate_snapshot_data").to_string_lossy().to_string(),
+                assets_path.join("isolate_snapshot_instr").to_string_lossy().to_string(),
+            ),
             icu_data_path.to_string_lossy().to_string(),
             vec![],
         )
