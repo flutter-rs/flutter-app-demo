@@ -64,7 +64,7 @@ impl EventHandler for Handler {
                 .map_err(|e| eprintln!("Error = {:?}", e))
                 .take_until(tripwire)
                 .for_each(move |v| {
-                    rt.with_channel(CHANNEL_NAME, move |channel| {
+                    rt.with_channel(CHANNEL_NAME.to_string(), move |channel| {
                         if let Some(channel) = channel.try_as_method_channel() {
                             let ret = Value::String(String::from(v));
                             channel.send_success_event(&ret);
