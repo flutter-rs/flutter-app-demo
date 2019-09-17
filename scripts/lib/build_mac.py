@@ -1,7 +1,6 @@
 import os
 from shutil import copy, copyfile, copytree, rmtree
 import subprocess
-from .download import lib_path
 
 def prepare(envs):
     envs = dict(envs)
@@ -14,20 +13,21 @@ def prepare(envs):
     return envs
 
 def build(envs):
-    APP_PATH = envs.get('APP_PATH')
+    app_path = envs.get('APP_PATH')
+    output_dir = envs.get('OUTPUT_DIR')
 
     # clear last output
-    rmtree(APP_PATH, ignore_errors = True)
+    rmtree(app_path, ignore_errors = True)
 
-    bin_dir = os.path.join(APP_PATH, 'Contents', 'MacOS')
-    frm_dir = os.path.join(APP_PATH, 'Contents', 'Frameworks')
-    res_dir = os.path.join(APP_PATH, 'Contents', 'Resources')
+    bin_dir = os.path.join(app_path, 'Contents', 'MacOS')
+    frm_dir = os.path.join(app_path, 'Contents', 'Frameworks')
+    res_dir = os.path.join(app_path, 'Contents', 'Resources')
 
     os.makedirs(bin_dir, exist_ok = True)
     os.makedirs(res_dir, exist_ok = True)
-    copy(os.path.join(envs['TARGET_DIR'], 'debug' if envs['DEBUG'] else 'release' , envs['NAME']), bin_dir)
+    copy(os.path.join(output_dir, envs['NAME']), bin_dir)
     subprocess.run(['chmod', '+x', os.path.join(bin_dir, envs['NAME'])], check = True)
-    copytree(os.path.join(lib_path(), envs['FLUTTER_LIB_VER'], 'FlutterEmbedder.framework'), os.path.join(frm_dir, 'FlutterEmbedder.framework'), symlinks = True)
+    copytree(os.path.join(output_dir, 'FlutterEmbedder.framework'), os.path.join(frm_dir, 'FlutterEmbedder.framework'), symlinks = True)
     # copy resources
     copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icon.icns'), res_dir)
     copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icudtl.dat'), res_dir)
@@ -37,10 +37,10 @@ def build(envs):
         identifier = envs['IDENTIFIER'],
         name = envs['NAME']
     )
-    plist_file = open(os.path.join(APP_PATH, 'Contents', 'Info.plist'), 'w+')
+    plist_file = open(os.path.join(app_path, 'Contents', 'Info.plist'), 'w+')
     plist_file.write(plist)
 
-    return APP_PATH
+    return app_path
 
 
 plist_tmpl = '''<?xml version="1.0" encoding="UTF-8"?>

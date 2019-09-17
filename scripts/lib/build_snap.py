@@ -2,7 +2,6 @@ import os
 import subprocess
 from shutil import copy, copyfile, copytree, rmtree
 from . import tmpl_file
-from .download import lib_path
 
 def prepare(envs):
     envs = dict(envs)
@@ -22,6 +21,7 @@ def tmpl_config(envs):
 
 def collect(envs):
   snap_dir = envs['SNAP_DIR']
+  output_dir = envs['OUTPUT_DIR']
   files_dir = os.path.join(snap_dir, 'files')
   os.makedirs(files_dir, exist_ok = True)
 
@@ -30,7 +30,7 @@ def collect(envs):
   # flutter app files
   copy(bin, files_dir)
   # subprocess.run(['chmod', '+x', os.path.join(files_dir, envs['NAME'])], check = True)
-  copy(os.path.join(lib_path(), envs['FLUTTER_LIB_VER'], 'libflutter_engine.so'), files_dir)
+  copy(os.path.join(output_dir, 'libflutter_engine.so'), files_dir)
   copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icon.ico'), files_dir)
   copy(os.path.join(envs['RUST_ASSETS_DIR'], 'icudtl.dat'), files_dir)
 
