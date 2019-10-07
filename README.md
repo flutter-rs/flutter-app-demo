@@ -49,3 +49,6 @@ You can set this using any of the following methods.
     **Note:**
     Build scripts are written in python3. Install python depenendencies using `pip3 install -r scripts/requirements.txt`
     Build on Windows require [NSIS3](https://sourceforge.net/projects/nsis/files/NSIS%203/)
+
+# Caveat
+    Ubuntu font is required on linux, otherwise please change the default font using `ThemeData` accordingly.
