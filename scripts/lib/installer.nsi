@@ -7,8 +7,8 @@
 ;Name and file
 !define APPNAME "$%NAME%"
 !define VERSION "$%VERSION%"
-!define LOCALE_APPNAME "Flutter App Demo"
-!define PUBLISHER "flutter-rs Developers"
+!define LOCALE_APPNAME "$%LOCALE_APPNAME%"
+!define PUBLISHER "$%PUBLISHER%"
 Name "${LOCALE_APPNAME}"
 OutFile "$%OUTPUT_FILE%"
 BrandingText "${LOCALE_APPNAME} ${VERSION}"

@@ -13,6 +13,7 @@ def collect_env(args):
     RUST_ASSETS_DIR = os.path.join(RUST_PROJ_DIR, 'assets')
     TOML_FILE = os.path.join(RUST_PROJ_DIR, 'Cargo.toml')
     META = toml.loads(open(TOML_FILE).read())
+    CONFIG = toml.loads(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.toml')).read())
     NAME = META['package']['name']
     VERSION = META['package']['version']
     DESCRIPTION = META['package']['description']
@@ -24,8 +25,6 @@ def collect_env(args):
     WORKSPACE = get_workspace_dir(RUST_PROJ_DIR)
     WORKSPACE_TARGET_DIR = os.path.join(WORKSPACE, 'target') if WORKSPACE else None
     OUTPUT_DIR = os.path.join(TARGET_DIR, 'debug' if DEBUG else 'release')
-    FLUTTER_CONFIG = META['package']['metadata']['flutter']
-    IDENTIFIER =  FLUTTER_CONFIG['identifier'] if 'identifier' in FLUTTER_CONFIG else 'one.juju.flutter-app'
     FLUTTER_LIB_VER = get_flutter_version()
     FLUTTER_ASSETS = os.path.join(os.path.dirname(RUST_PROJ_DIR), 'build', 'flutter_assets')
     return locals()

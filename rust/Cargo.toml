@@ -6,9 +6,6 @@ authors = ["juju <gliheng@foxmail.com>", "Sophie Tauchert <sophie@999eagle.moe>"
 publish = false
 edition = "2018"
 
-[package.metadata.flutter]
-identifier = "one.juju.flutter-app" # This is only used on mac
-
 [dependencies]
 log = "0.4.6"
 tokio = "^0.1"

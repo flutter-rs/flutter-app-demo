@@ -6,9 +6,12 @@ def prepare(envs):
     envs = dict(envs)
     APP_NAME = envs['NAME'] + '.app'
     APP_PATH = os.path.join(envs['OUTPUT_DIR'], APP_NAME)
+    IDENTIFIER = envs['CONFIG']['mac']['identifier']
+
     envs.update(
         APP_NAME = APP_NAME,
         APP_PATH = APP_PATH,
+        IDENTIFIER = IDENTIFIER,
     )
     return envs
 

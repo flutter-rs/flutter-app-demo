@@ -1,0 +1,6 @@
+[mac]
+identifier = "one.juju.flutter-app"
+
+[win]
+locale_app_name = "Flutter App Demo"
+publisher = "flutter-rs Developers"

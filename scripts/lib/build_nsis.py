@@ -7,6 +7,7 @@ def prepare(envs):
     name = envs['NAME']
     output_dir = envs['OUTPUT_DIR']
     assets_dir = envs['RUST_ASSETS_DIR']
+    win_config = envs['CONFIG']['win']
     return dict(
         NAME = name,
         VERSION = envs['VERSION'],
@@ -16,6 +17,8 @@ def prepare(envs):
         ICON = os.path.join(assets_dir, 'icon.ico'),
         FLUTTER_ASSETS = envs['FLUTTER_ASSETS'],
         OUTPUT_FILE = os.path.join(output_dir, 'Installer.exe'),
+        LOCALE_APPNAME = win_config['locale_app_name'],
+        PUBLISHER = win_config['publisher'],
     )
 
 def build(envs):
