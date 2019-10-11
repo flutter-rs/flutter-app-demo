@@ -13,7 +13,7 @@ def collect_env(args):
     RUST_ASSETS_DIR = os.path.join(RUST_PROJ_DIR, 'assets')
     TOML_FILE = os.path.join(RUST_PROJ_DIR, 'Cargo.toml')
     META = toml.loads(open(TOML_FILE).read())
-    CONFIG = toml.loads(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.toml')).read())
+    CONFIG = toml.loads(open(os.path.join(RUST_PROJ_DIR, 'build.toml')).read())
     NAME = META['package']['name']
     VERSION = META['package']['version']
     DESCRIPTION = META['package']['description']
