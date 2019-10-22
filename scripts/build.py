@@ -39,7 +39,7 @@ def build_flutter(envs):
     subprocess.run([FLUTTER, 'build', 'bundle'], cwd = envs['PROJ_DIR'])
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog='build', description='rust app distribution builder')
+    parser = argparse.ArgumentParser(prog='build', description='flutter-rs app distribution builder')
     parser.add_argument('dist', choices=['mac', 'dmg', 'nsis', 'snap'], help='distribution type')
     parser.add_argument('--release', action='store_true', help='build release package')
 

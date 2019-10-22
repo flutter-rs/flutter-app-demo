@@ -1,6 +1,6 @@
 import os, sys, subprocess
 from string import Template
-
+from . import utils
 
 def look_for_proj_dir(d, fn = 'Cargo.toml'):
     while not os.path.isfile(os.path.join(d, fn)):
