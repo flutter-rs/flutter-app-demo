@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride;
@@ -33,19 +34,10 @@ class MyApp extends StatelessWidget {
 const CMD = 'psi create flutter_app';
 
 class GetStartedPage extends StatelessWidget {
-  final MethodChannel channel = MethodChannel('flutter/platform', JSONMethodCodec());
-
-  void _showToast(BuildContext context, String text) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(text),
-      ),
-    );
-  }
 
   Widget _buildBody(BuildContext context) {
     var theme = Theme.of(context);
+
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,45 +60,35 @@ class GetStartedPage extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Center(
-                  child: SizedBox(
-                    width: 800,
-                    height: 100,
-                    child: FlatButton(
-                      color: Colors.black12,
+            child: Container(
+              color: Colors.blueGrey.shade700,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Center(
+                    child: SizedBox(
+                      width: 800,
+                      height: 100,
                       child: Center(
-                        child: Text(CMD,
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
+                        child: GetStartHelp(),
                       ),
-                      onPressed: () {
-                        channel.invokeMethod('Clipboard.setData', {
-                          'text': CMD,
-                        });
-                        _showToast(context, 'Copied to clipboard');
-                      },
                     ),
                   ),
-                ),
-                Center(
-                  child: RaisedButton(
-                    color: theme.primaryColor,
-                    padding: EdgeInsets.all(14.0),
-                    textTheme: ButtonTextTheme.primary,
-                    child: Text('Show Demos', style:TextStyle(
-                      fontSize: 30
-                    )),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/demo');
-                    },
-                  )
-                ),
-              ],
+                  Center(
+                    child: RaisedButton(
+                      color: theme.primaryColor,
+                      padding: EdgeInsets.all(14.0),
+                      textTheme: ButtonTextTheme.primary,
+                      child: Text('Show Demos', style:TextStyle(
+                        fontSize: 30
+                      )),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/demo');
+                      },
+                    )
+                  ),
+                ],
+              ),
             )
           ),
         ],
@@ -119,6 +101,66 @@ class GetStartedPage extends StatelessWidget {
       body: Builder(
         builder: (context) => _buildBody(context)
       )
+    );
+  }
+}
+
+class GetStartHelp extends StatelessWidget {
+  final MethodChannel channel = MethodChannel('flutter/platform', JSONMethodCodec());
+
+  void _showToast(BuildContext context, String text) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(text),
+      ),
+    );
+  }
+
+  copyText(BuildContext context) {
+    channel.invokeMethod('Clipboard.setData', {
+      'text': CMD,
+    });
+    _showToast(context, 'Copied to clipboard');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Create a project with: ',
+                style: TextStyle(
+                  color: Colors.white.withAlpha(200),
+                  fontSize: 16,
+                ),
+              ),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: FlatButton(
+                  onPressed: () {
+                    copyText(context);
+                  },
+                  color: Colors.redAccent,
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(CMD, style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  )),
+                )
+              ),
+            ]
+          )
+        ),
+        Text(
+          'psi can be installed by `pip install psi-cli`',
+          style: TextStyle(color: Colors.white54)
+        )
+      ],
     );
   }
 }
