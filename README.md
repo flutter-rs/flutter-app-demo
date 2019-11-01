@@ -2,7 +2,7 @@
 
 A desktop app built using flutter & rust.
 
-![screenshot](https://raw.githubusercontent.com/gliheng/flutter-rs/master/www/images/screenshot_mac.png)
+![screenshot](https://raw.githubusercontent.com/flutter-rs/flutter-rs/master/www/images/screenshot_mac.png)
 
 
 - Support Hot reload
