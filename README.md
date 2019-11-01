@@ -31,24 +31,30 @@ You can set this using any of the following methods.
 - Set FLUTTER_ENGINE_VERSION environment variable to your engine version
 
 # Develop
-- To develop with cli hot-reloading, simple run:
 
-    `python ./scripts/run.py`
+To develop, install [flutter-rs devtools](https://github.com/flutter-rs/psi-cli) with `pip install psi-cli`
 
-- To debug using VS Code dart tools:
+**Note:**
+Devtools require python3
 
-    Start process using `cargo run`
+- Create a flutter-rs app
 
-    Then attach to debugger using
-    `flutter attach --debug-uri=DEBUG_URI`
+    `psi create flutter_app`
 
-# Distribute
-- To build distribution, use:
-    `python ./scripts/build.py mac|dmg|nsis|snap`
+- Add flutter-rs to existing flutter project
 
-    **Note:**
-    Build scripts are written in python3. Install python depenendencies using `pip3 install -r scripts/requirements.txt`
-    Build on Windows require [NSIS3](https://sourceforge.net/projects/nsis/files/NSIS%203/)
+    `psi create .`
 
-# Caveat
+- Run a flutter-rs app in dev mode
+
+    `psi run --vscode`
+
+- Bundle a flutter-rs app for distribution
+
+    `psi build {nsis,mac,dmg,snap} --release`
+
+**Note:**
+Build on Windows require [NSIS3](https://sourceforge.net/projects/nsis/files/NSIS%203/)
+
+# Caveats
     Ubuntu font is required on linux, otherwise please change the default font using `ThemeData` accordingly.

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-var cmd = 'git clone https://github.com/gliheng/flutter-app-template.git flutter_app\npython ./flutter_app/scripts/init.py';
+const CMD = 'psi create flutter_app';
 
 class GetStartedPage extends StatelessWidget {
   final MethodChannel channel = MethodChannel('flutter/platform', JSONMethodCodec());
@@ -78,15 +78,15 @@ class GetStartedPage extends StatelessWidget {
                     child: FlatButton(
                       color: Colors.black12,
                       child: Center(
-                        child: Text(
-                          cmd, style: TextStyle(
+                        child: Text(CMD,
+                          style: TextStyle(
                             fontSize: 20,
                           ),
                         ),
                       ),
                       onPressed: () {
                         channel.invokeMethod('Clipboard.setData', {
-                          'text': cmd,
+                          'text': CMD,
                         });
                         _showToast(context, 'Copied to clipboard');
                       },
