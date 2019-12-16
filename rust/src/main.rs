@@ -7,8 +7,8 @@ mod msg_stream_channel;
 use std::{env, path::PathBuf};
 
 use fern::colors::{Color, ColoredLevelConfig};
-use flutter_engine::DesktopWindowState;
-use flutter_plugins::{dialog, window};
+use flutter_glfw::window::{FlutterWindow, WindowArgs, WindowMode};
+use flutter_plugins::{dialog, settings};
 use log::info;
 
 #[cfg(target_os = "macos")]
@@ -76,43 +76,41 @@ fn main() {
         }
     };
 
-    let mut engine = flutter_engine::init().unwrap();
-    engine
+    let mut engine = flutter_glfw::init().unwrap();
+    let window = engine
         .create_window(
-            &flutter_engine::WindowArgs {
+            &WindowArgs {
                 height: 1200,
                 width: 1800,
                 title: "Flutter App Demo",
-                mode: flutter_engine::WindowMode::Windowed,
+                mode: WindowMode::Windowed,
                 bg_color: (255, 255, 255),
             },
-            assets_path.to_string_lossy().to_string(),
-            icu_data_path.to_string_lossy().to_string(),
-            vec![],
         )
         .unwrap();
-    engine.init_with_window_state(|window_state| {
-        window_state
-            .plugin_registrar
-            .add_plugin(calc_channel::CalcPlugin::default())
-            .add_plugin(dialog::DialogPlugin::default())
-            .add_plugin(msg_stream_channel::MsgStreamPlugin::default())
-            .add_plugin(window::WindowPlugin::default());
-        window_state
-            .plugin_registrar
-            .with_plugin(|p: &flutter_engine::plugins::SettingsPlugin| {
-                p.start_message()
-                    .set_text_scale_factor(1.0)
-                    .set_platform_brightness(
-                        flutter_engine::plugins::settings::PlatformBrightness::Dark,
-                    )
-                    .send();
-            });
-    });
-    engine.run_window_loop(Some(&mut glfw_event_handler), None);
+    window
+        .add_plugin(calc_channel::CalcPlugin::default())
+        .add_plugin(dialog::DialogPlugin::default())
+        .add_plugin(msg_stream_channel::MsgStreamPlugin::default())
+        //.add_plugin(window::WindowPlugin::default())
+        .with_plugin(|p: &settings::SettingsPlugin| {
+            p.start_message()
+                .set_text_scale_factor(1.0)
+                .set_platform_brightness(
+                    settings::PlatformBrightness::Dark,
+                )
+                .send();
+        });
+    window.run(
+        assets_path.to_str().unwrap().to_string(),
+        icu_data_path.to_str().unwrap().to_string(),
+        vec![],
+        None, //Some(&mut glfw_event_handler),
+        None,
+    ).unwrap();
 }
 
-fn glfw_event_handler(window_state: &mut DesktopWindowState, event: glfw::WindowEvent) -> bool {
+/*fn glfw_event_handler(window_state: &FlutterWindow, event: glfw::WindowEvent) -> bool {
     match event {
         glfw::WindowEvent::CursorPos(x, y) => {
             let dragging = window_state.with_window_and_plugin_mut_result(
@@ -126,4 +124,4 @@ fn glfw_event_handler(window_state: &mut DesktopWindowState, event: glfw::Window
         }
         _ => true,
     }
-}
+}*/

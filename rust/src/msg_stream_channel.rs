@@ -1,7 +1,9 @@
-use std::{iter::repeat, time::Duration};
-
-use flutter_engine::plugins::prelude::*;
+use flutter_plugins::prelude::*;
+use futures::compat::Future01CompatExt;
+use futures::future::FutureExt;
 use log::info;
+use std::iter::repeat;
+use std::time::Duration;
 use stream_cancel::{StreamExt as StreamExt2, Trigger, Tripwire};
 use tokio::prelude::*;
 
@@ -41,7 +43,7 @@ impl EventHandler for Handler {
     fn on_listen(
         &mut self,
         args: Value,
-        runtime_data: RuntimeData,
+        engine: FlutterEngine,
     ) -> Result<Value, MethodCallError> {
         if let Value::I32(n) = args {
             info!("Random stream invoked with params {}", n);
@@ -50,8 +52,8 @@ impl EventHandler for Handler {
         let (trigger, tripwire) = Tripwire::new();
         self.stop_trigger = Some(trigger);
 
-        let rt = runtime_data.clone();
-        runtime_data.task_executor.spawn(futures::lazy(move || {
+        let rt = engine.clone();
+        engine.run_in_background(future::lazy(move || {
             let v = vec![
                 "Hello?",
                 "What's your name?",
@@ -69,15 +71,14 @@ impl EventHandler for Handler {
                             let ret = Value::String(String::from(v));
                             channel.send_success_event(&ret);
                         }
-                    })
-                    .unwrap();
+                    });
                     Ok(())
                 })
-        }));
+        }).into_future().compat().map(|_| ()));
         Ok(Value::Null)
     }
 
-    fn on_cancel(&mut self, _: RuntimeData) -> Result<Value, MethodCallError> {
+    fn on_cancel(&mut self, _: FlutterEngine) -> Result<Value, MethodCallError> {
         // drop the trigger to stop stream
         self.stop_trigger.take();
         Ok(Value::Null)

@@ -1,4 +1,4 @@
-use flutter_engine::plugins::prelude::*;
+use flutter_plugins::prelude::*;
 
 const PLUGIN_NAME: &str = module_path!();
 const CHANNEL_NAME: &str = "rust/calc";
@@ -32,7 +32,7 @@ impl MethodCallHandler for Handler {
     fn on_method_call(
         &mut self,
         call: MethodCall,
-        _: RuntimeData,
+        _: FlutterEngine,
     ) -> Result<Value, MethodCallError> {
         match call.method.as_str() {
             "fibonacci" => {
