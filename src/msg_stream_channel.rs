@@ -1,9 +1,8 @@
-use std::{iter::repeat, time::Duration};
-
-use flutter_engine::plugins::prelude::*;
+use async_std::task;
+use flutter_plugins::prelude::*;
 use log::info;
-use stream_cancel::{StreamExt as StreamExt2, Trigger, Tripwire};
-use tokio::prelude::*;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::time::Duration;
 
 const PLUGIN_NAME: &str = module_path!();
 const CHANNEL_NAME: &str = "rust/msg_stream";
@@ -28,58 +27,55 @@ impl Default for MsgStreamPlugin {
     fn default() -> Self {
         Self {
             channel: Weak::new(),
-            handler: Arc::new(RwLock::new(Handler { stop_trigger: None })),
+            handler: Arc::new(RwLock::new(Handler {
+                stop_trigger: Default::default(),
+            })),
         }
     }
 }
 
 struct Handler {
-    stop_trigger: Option<Trigger>,
+    stop_trigger: Arc<AtomicBool>,
 }
 
 impl EventHandler for Handler {
-    fn on_listen(
-        &mut self,
-        args: Value,
-        runtime_data: RuntimeData,
-    ) -> Result<Value, MethodCallError> {
+    fn on_listen(&mut self, args: Value, engine: FlutterEngine) -> Result<Value, MethodCallError> {
         if let Value::I32(n) = args {
             info!("Random stream invoked with params {}", n);
         }
 
-        let (trigger, tripwire) = Tripwire::new();
-        self.stop_trigger = Some(trigger);
-
-        let rt = runtime_data.clone();
-        runtime_data.task_executor.spawn(futures::lazy(move || {
-            let v = vec![
+        let rt = engine.clone();
+        let stop_trigger = Arc::new(AtomicBool::new(false));
+        self.stop_trigger = stop_trigger.clone();
+        engine.run_in_background(async move {
+            let msgs = vec![
                 "Hello?",
                 "What's your name?",
                 "How old are you?",
                 "Maybe we can be friend together...",
                 "Do you have a brother or sister?",
             ];
-            stream::iter_ok::<_, ()>(repeat(v).flatten())
-                .throttle(Duration::from_secs(1))
-                .map_err(|e| eprintln!("Error = {:?}", e))
-                .take_until(tripwire)
-                .for_each(move |v| {
+
+            loop {
+                for msg in msgs.iter() {
+                    task::sleep(Duration::from_secs(1)).await;
+                    if stop_trigger.load(Ordering::Relaxed) {
+                        break;
+                    }
                     rt.with_channel(CHANNEL_NAME, move |channel| {
                         if let Some(channel) = channel.try_as_method_channel() {
-                            let ret = Value::String(String::from(v));
+                            let ret = Value::String(String::from(*msg));
                             channel.send_success_event(&ret);
                         }
-                    })
-                    .unwrap();
-                    Ok(())
-                })
-        }));
+                    });
+                }
+            }
+        });
         Ok(Value::Null)
     }
 
-    fn on_cancel(&mut self, _: RuntimeData) -> Result<Value, MethodCallError> {
-        // drop the trigger to stop stream
-        self.stop_trigger.take();
+    fn on_cancel(&mut self, _: FlutterEngine) -> Result<Value, MethodCallError> {
+        self.stop_trigger.store(true, Ordering::Relaxed);
         Ok(Value::Null)
     }
 }

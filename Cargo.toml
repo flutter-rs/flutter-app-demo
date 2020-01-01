@@ -1,0 +1,16 @@
+[package]
+name = "flutter-app-demo"
+description = "Amazing desktop flutter app"
+version = "0.3.0"
+authors = ["juju <gliheng@foxmail.com>", "Sophie Tauchert <sophie@999eagle.moe>"]
+edition = "2018"
+publish = false
+
+[dependencies]
+async-std = "1.4.0"
+env_logger = "0.7.1"
+flutter-engine = { git = "https://github.com/flutter-rs/flutter-rs", features = ["loader"] }
+flutter-plugins = { git = "https://github.com/flutter-rs/flutter-rs" }
+flutter-winit = { git = "https://github.com/flutter-rs/flutter-rs" }
+glutin = { git = "https://github.com/dvc94ch/glutin", branch = "android" }
+log = "0.4.8"

@@ -17,10 +17,6 @@ A desktop app built using flutter & rust.
 
 - [Rust](https://www.rust-lang.org/tools/install)
 
-- libglfw:
-    - Install on Mac with: `brew install glfw`
-    - Install on linux with `apt install libglfw3`
-    
 - [flutter sdk](https://flutter.io)
 
 # Config flutter engine version
@@ -32,29 +28,16 @@ You can set this using any of the following methods.
 
 # Develop
 
-To develop, install [flutter-rs devtools](https://github.com/flutter-rs/psi-cli) with `pip install psi-cli`
-
-**Note:**
-Devtools require python3
+To develop, install [cargo-flutter](https://github.com/flutter-rs/cargo-flutter).
 
 - Create a flutter-rs app
 
-    `psi create flutter_app`
-
-- Add flutter-rs to existing flutter project
-
-    `psi create .`
+    `git clone https://github.com/flutter-rs/flutter-app-template`
 
 - Run a flutter-rs app in dev mode
 
-    `psi run --vscode`
+    `cargo flutter run`
 
 - Bundle a flutter-rs app for distribution
 
-    `psi build {nsis,mac,dmg,snap} --release`
-
-**Note:**
-Build on Windows require [NSIS3](https://sourceforge.net/projects/nsis/files/NSIS%203/)
-
-# Caveats
-    Ubuntu font is required on linux, otherwise please change the default font using `ThemeData` accordingly.
+    `cargo flutter --format appimage build --release`
