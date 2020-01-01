@@ -25,10 +25,5 @@ ThemeData getTheme(ThemeType type) {
 }
 
 String getFont() {
-  if (Platform.isLinux) {
-    return 'Ubuntu';
-  } else if (Platform.isWindows) {
-  } else if (Platform.isMacOS) {
-  }
   return null;
 }

@@ -27,7 +27,6 @@ class AppBar extends StatelessWidget implements PreferredSizeWidget {
       title: GestureDetector(
         behavior: HitTestBehavior.opaque,
         child: Container(
-          constraints: BoxConstraints.expand(),
           child: Align(
             alignment: Alignment.centerLeft,
             child: title,
