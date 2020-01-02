@@ -30,7 +30,9 @@ fn main() {
         .add_plugin(calc_channel::CalcPlugin::default())
         .add_plugin(msg_stream_channel::MsgStreamPlugin::default());
 
-    flutter.start_engine(&PathBuf::from(asset_dir), &[], snapshot).unwrap();
+    flutter
+        .start_engine(&PathBuf::from(asset_dir), &[], snapshot)
+        .unwrap();
 
     flutter.with_plugin(|p: &settings::SettingsPlugin| {
         p.start_message()
